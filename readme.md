@@ -15,7 +15,7 @@ Then a plover derivation containing the plugins you want can be built with
 inputs.plover-flake.packages.${system}.plover.withPlugins (ps: with ps; [
   plover-lapwing-aio
   plover-console-ui
-];
+]);
 ```
 
 Where `ps` is an attribute set containing all plugins from the plugin registry, as well as some extra plugins.
@@ -53,6 +53,12 @@ If you use [home-manager](https://github.com/nix-community/home-manager), there 
 If you don't want nix to manage the configuration of plover, you can omit the `settings` value.
 
 ## NixOS configuration
+
+To let Plover find serial ports, add your user to the `dialout` user group:
+
+```nix
+users.users."YOUR USER".extraGroups = [ "dialout" ];
+```
 
 If you use wayland, you will want to add the following snippet to your NixOS system configuration.
 
