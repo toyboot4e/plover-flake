@@ -18,8 +18,17 @@
   readme-renderer,
   cmarkgfm,
   requests-cache,
+
+  # darwin
+  appnope,
+  pyobjc-core,
+  pyobjc-framework-Cocoa,
+  # pyobjc-framework-Quartz,
+
   inputs,
-  writeShellScriptBin
+  writeShellScriptBin,
+  lib,
+  pkgs,
 }:
 let
   plover-stroke = buildPythonPackage {
@@ -57,6 +66,7 @@ buildPythonPackage {
 
   buildInputs = [
     qt6.qtsvg # required for rendering icons
+  ] ++ lib.optionals pkgs.stdenv.isLinux [
     qt6.qtwayland
   ];
 
@@ -69,7 +79,6 @@ buildPythonPackage {
     wcwidth
     setuptools
     certifi
-    evdev
     packaging
     pkginfo
     pygments
@@ -80,6 +89,17 @@ buildPythonPackage {
     plover-stroke
     psutil
     rtf-tokenize
+  ] ++ lib.optionals pkgs.stdenv.isLinux [
+    evdev
+  ] ++ lib.optionals pkgs.stdenv.isDarwin [
+    # TODO: no need to propagate?
+    # pkgs.apple_sdk
+    # pkgs.darwin.apple_sdk.frameworks.AppKit
+    # pkgs.darwin.xcode
+    appnope
+    pyobjc-core
+    pyobjc-framework-Cocoa
+    # pyobjc-framework-Quartz
   ];
 
   postInstall = ''
