@@ -21,7 +21,6 @@ let
       inherit pname version;
       sha256 = "sha256-cEWJLcvTJNNoX2nFp2AGPnj7g5kTckzhgHfPCgyT8iA=";
     };
-    doCheck = false;
   };
   obsws-python = buildPythonPackage rec {
     pname = "obsws_python";
@@ -49,6 +48,8 @@ in
       hid
       bitarray
     ];
+    # ModuleNotFoundError: No module named 'PyQt5'
+    meta.broken = true;
   };
   plover2cat = buildPythonPackage {
     pname = "plover2cat";
@@ -64,6 +65,5 @@ in
       spylls
       obsws-python
     ];
-    doCheck = false;
   };
 }
