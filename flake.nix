@@ -74,6 +74,19 @@
           in
           plover' // { inherit withPlugins; };
 
+        plover-full =
+          let
+            plover' = plover.withPlugins (
+              ps: builtins.filter (x: x ? meta && !x.meta.broken) (builtins.attrValues ps)
+            );
+            withPlugins =
+              f: # f is a function such as (ps: with ps; [ plugin names ])
+              plover'.overridePythonAttrs (old: {
+                dependencies = old.dependencies ++ (f self.ploverPlugins.${pkgs.system});
+              });
+          in
+          plover' // { inherit withPlugins; };
+
         update = pkgs.callPackage ./update.nix { inherit inputs; };
       });
 
