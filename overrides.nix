@@ -1,42 +1,105 @@
 {
   buildPythonPackage,
   fetchPypi,
+  inputs,
   qt6,
   writeShellScriptBin,
 
   # build-system
+  poetry-core,
   setuptools,
   setuptools-scm,
 
   # dependencies
   aiohttp,
+  dulwich,
   evdev,
+  hatchling,
   hjson,
   importlib-metadata,
   inflect,
   jsonpickle,
   lxml,
   numpy,
+  odfpy,
+  plover,
   prompt-toolkit,
   pyfiglet,
   pygame,
   pypandoc,
+  pyparsing,
   pysdl2,
   pystray,
   python-rtmidi,
   pyudev,
+  tomli,
   ruamel-yaml,
   xkbcommon,
+  websocket-client,
 
   # test
   pytest,
   pytestCheckHook,
 }:
+let
+  spylls = buildPythonPackage rec {
+    pname = "spylls";
+    version = "0.1.7";
+    pyproject = true;
+
+    src = fetchPypi {
+      inherit pname version;
+      sha256 = "sha256-cEWJLcvTJNNoX2nFp2AGPnj7g5kTckzhgHfPCgyT8iA=";
+    };
+
+    # because `poetry` was removed from the toplevel python package, we must use `poetry-core`:
+    build-system = [ poetry-core ];
+
+    postPatch = ''
+      substituteInPlace "pyproject.toml" --replace-fail 'poetry.masonry.api' 'poetry.core.masonry.api'
+      substituteInPlace "pyproject.toml" --replace-fail 'poetry>=0.12' 'poetry-core'
+    '';
+  };
+  obsws-python = buildPythonPackage rec {
+    pname = "obsws_python";
+    version = "1.6.1";
+    pyproject = true;
+
+    src = fetchPypi {
+      inherit pname version;
+      sha256 = "sha256-n1l4M3xVfp+8pnO1rF3Ww7Vwyi6GCD3/QHLbrZOXp7w=";
+    };
+
+    build-system = [ setuptools ];
+
+    buildInputs = [ hatchling ];
+    dependencies = [
+      tomli
+      websocket-client
+    ];
+  };
+in
 final: prev: {
   # alleycat-link
 
-  # This plugin is (exceptionally) defined in `extra-plugins.nix`
-  # plover2cat
+  plover2cat = buildPythonPackage {
+    pname = "plover2cat";
+    version = "master";
+    src = inputs.plover2cat;
+    pyproject = true;
+    build-system = [ setuptools ];
+    buildInputs = [ plover ];
+    dependencies = [
+      dulwich
+      odfpy
+      pyparsing
+      spylls
+      obsws-python
+    ];
+
+    # AttributeError: module 'plover_build_utils.pyqt' has no attribute 'fix_icons'
+    meta.broken = true;
+  };
 
   plover-1password = prev.plover-1password.overridePythonAttrs (old: {
     # onepassword-sdk
