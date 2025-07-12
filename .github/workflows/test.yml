@@ -16,3 +16,4 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
       - run: nix fmt -- --ci
       - run: nix build
+      - run: nix build .#plover-full
