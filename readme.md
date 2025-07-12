@@ -39,6 +39,10 @@ If you use [home-manager](https://github.com/nix-community/home-manager), there 
         plover-lapwing-aio
       ]
     );
+
+    # Or, use `plover-full` if you want Plover with all the plugins enabled:
+    # package = inputs.plover-flake.packages.${pkgs.system}.plover-full;
+
     settings = {
       "Machine Configuration" = {
         machine_type = "Gemini PR";
