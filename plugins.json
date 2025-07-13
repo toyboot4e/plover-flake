@@ -349,9 +349,9 @@
   },
   {
     "name": "plover-plugins-manager",
-    "filename": "plover_plugins_manager-0.7.2.tar.gz",
-    "version": "0.7.2",
-    "sha256": "47283f6f33504d1a2b1e67099d394d85946cc1729d2b0b9048e562117e0e707b"
+    "filename": "plover_plugins_manager-0.7.9.tar.gz",
+    "version": "0.7.9",
+    "sha256": "32b957391f579755156e2512dae01d163f01dc0e110458052a95e5b98c180631"
   },
   {
     "name": "plover-portuguese",
