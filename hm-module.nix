@@ -2,7 +2,6 @@ self:
 {
   config,
   pkgs,
-  stdenvNoCC,
   lib,
   ...
 }:
@@ -122,19 +121,21 @@ in
 
   config =
     let
-      configDir =
-        if stdenvNoCC.isLinux then xdg.configFile."plover" else "$HOME/Library/Application Support/plover";
+      configFile = iniFormat.generate "plover.cfg" (
+        # It is necessary to filter the attrs because the option definitions require a default value, but should be unset in the result.
+        lib.filterAttrsRecursive (n: v: v != null) cfg.settings
+      );
     in
     lib.mkIf cfg.enable (
       lib.mkMerge [
         {
           home.packages = [ cfg.package ];
         }
-        (lib.mkIf (cfg.settings != null) {
-          # It is necessary to filter the attrs because the option definitions require a default value, but should be unset in the result.
-          "${configDir}/plover.cfg".source = iniFormat.generate "plover.cfg" (
-            lib.filterAttrsRecursive (n: v: v != null) cfg.settings
-          );
+        (lib.mkIf (cfg.settings != null && pkgs.stdenvNoCC.isLinux) {
+          lib.xdg.configFile."plover".source = configFile;
+        })
+        (lib.mkIf (cfg.settings != null && pkgs.stdenvNoCC.isDarwin) {
+          home.file."Library/Application Support/plover/plover.cfg".source = configFile;
         })
       ]
     );
