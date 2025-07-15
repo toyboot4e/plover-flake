@@ -19,11 +19,11 @@
     "plover": {
       "flake": false,
       "locked": {
-        "lastModified": 1752173486,
-        "narHash": "sha256-czNC8H/ASiQjSCawHyub840RMnLYVh0mzLyTH3knfr0=",
+        "lastModified": 1752472660,
+        "narHash": "sha256-pdw9xnyafRJwhuOCO+UzSnoWHSZgNJsJwAYlHDsUOpQ=",
         "owner": "openstenoproject",
         "repo": "plover",
-        "rev": "8e669cc7dd9dc9e5f659f5338648abf7541c3acd",
+        "rev": "7e52f3654fd2d02b7fd2a324a9edb33a27044bf4",
         "type": "github"
       },
       "original": {
