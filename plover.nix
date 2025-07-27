@@ -1,6 +1,5 @@
 {
   buildPythonPackage,
-  darwin,
   inputs,
   lib,
   pkgs,
@@ -31,6 +30,7 @@
 
   # darwin
   appnope,
+  darwin,
   pyobjc-core,
   pyobjc-framework-Cocoa,
 # pyobjc-framework-Quartz, # when nixpkgs got it
@@ -191,15 +191,25 @@ buildPythonPackage {
     substituteInPlace "reqs/constraints.txt" --replace-fail "PySide6-Essentials" "PySide6"
   '';
 
-  postInstall = ''
-    mkdir -p $out/share/icons/hicolor/128x128/apps
-    cp $src/plover/assets/plover.png $out/share/icons/hicolor/128x128/apps/plover.png
-
-    mkdir -p $out/share/applications
-    cp $src/linux/plover.desktop $out/share/applications/plover.desktop
-    substituteInPlace "$out/share/applications/plover.desktop" \
-      --replace-fail "Exec=plover" "Exec=$out/bin/plover"
-  '';
+  postInstall =
+    lib.optionalString stdenvNoCC.hostPlatform.isLinux ''
+      mkdir -p $out/share/icons/hicolor/128x128/apps
+      cp $src/plover/assets/plover.png $out/share/icons/hicolor/128x128/apps/plover.png
+      mkdir -p $out/share/applications
+      cp $src/linux/plover.desktop $out/share/applications/plover.desktop
+      substituteInPlace "$out/share/applications/plover.desktop" \
+        --replace-fail "Exec=plover" "Exec=$out/bin/plover"
+    ''
+    + lib.optionalString stdenvNoCC.hostPlatform.isDarwin ''
+      APP_DIR="$out/Applications/Plover.app/Contents"
+      mkdir -p $APP_DIR
+      # TODO: Replace $year
+      cp $src/osx/app_resources/Info.plist $APP_DIR/Info.plist
+      mkdir -p $APP_DIR/Resources
+      cp $src/osx/app_resources/plover.icns $APP_DIR/Resources/plover.icns
+      mkdir -p $APP_DIR/MacOS
+      makeWrapper "$out/bin/plover" "$APP_DIR/MacOS/Plover"
+    '';
 
   # See: https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/qt.section.md
   dontWrapQtApps = true;
