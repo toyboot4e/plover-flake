@@ -20,6 +20,12 @@ inputs.plover-flake.packages.${system}.plover.withPlugins (ps: with ps; [
 
 Where `ps` is an attribute set containing all plugins from the plugin registry, as well as some extra plugins.
 
+Alternatively, use `plover-full` package, where all the plugins are installed:
+
+```nix
+inputs.plover-flake.packages.${system}.plover-full
+```
+
 ## home-manager module
 
 If you use [home-manager](https://github.com/nix-community/home-manager), there is a module available. Here is an example of a configuration:
@@ -40,7 +46,7 @@ If you use [home-manager](https://github.com/nix-community/home-manager), there 
       ]
     );
 
-    # Or, use `plover-full` if you want Plover with all the plugins enabled:
+    # Or, use `plover-full` if you want Plover with all the plugins installed:
     # package = inputs.plover-flake.packages.${pkgs.system}.plover-full;
 
     settings = {
