@@ -1,25 +1,39 @@
 {
+  buildPythonPackage,
+  inputs,
+  lib,
+  pkgs,
+  stdenvNoCC,
+  qt6,
+  writeShellScriptBin,
+
+  # build-system
+  setuptools,
+
+  # dependencies
   appdirs,
   Babel,
-  buildPythonPackage,
   certifi,
+  cmarkgfm,
+  evdev,
+  psutil,
   pyside6,
   pyserial,
-  qt6,
   requests-futures,
-  psutil,
-  setuptools,
-  wcwidth,
-  xlib,
-  evdev,
   packaging,
   pkginfo,
   pygments,
   readme-renderer,
-  cmarkgfm,
   requests-cache,
-  inputs,
-  writeShellScriptBin,
+  xlib,
+  wcwidth,
+
+  # darwin
+  appnope,
+  darwin,
+  pyobjc-core,
+  pyobjc-framework-Cocoa,
+# pyobjc-framework-Quartz, # when nixpkgs got it
 }:
 let
   plover-stroke = buildPythonPackage {
@@ -28,6 +42,42 @@ let
     src = inputs.plover-stroke;
     pyproject = true;
     build-system = [ setuptools ];
+  };
+  pyobjc-framework-Quartz = buildPythonPackage {
+    pname = "pyobjc-framework-Quartz";
+    version = "11.0";
+    src = inputs.pyobjc;
+    pyproject = true;
+    build-system = [ setuptools ];
+    sourceRoot = "source/pyobjc-framework-Quartz";
+
+    buildInputs = [
+      darwin.libffi
+    ];
+
+    nativeBuildInputs = [
+      darwin.DarwinTools # sw_vers
+    ];
+
+    dependencies = [
+      pyobjc-core
+      pyobjc-framework-Cocoa
+    ];
+
+    postPatch = ''
+      substituteInPlace pyobjc_setup.py \
+        --replace-fail "-buildversion" "-buildVersion" \
+        --replace-fail "-productversion" "-productVersion" \
+        --replace-fail "/usr/bin/sw_vers" "sw_vers" \
+        --replace-fail "/usr/bin/xcrun" "xcrun"
+    '';
+
+    env.NIX_CFLAGS_COMPILE = toString [
+      "-I${darwin.libffi.dev}/include"
+      "-Wno-error=unused-command-line-argument"
+    ];
+
+    pythonImportsCheck = [ "Quartz" ];
   };
   rtf-tokenize = buildPythonPackage {
     pname = "rtf_tokenize";
@@ -61,6 +111,8 @@ buildPythonPackage {
 
   buildInputs = [
     qt6.qtsvg # required for rendering icons
+  ]
+  ++ lib.optionals pkgs.stdenv.isLinux [
     qt6.qtwayland
   ];
 
@@ -79,7 +131,6 @@ buildPythonPackage {
     wcwidth
     setuptools
     certifi
-    evdev
     packaging
     pkginfo
     pygments
@@ -90,6 +141,15 @@ buildPythonPackage {
     plover-stroke
     psutil
     rtf-tokenize
+  ]
+  ++ lib.optionals stdenvNoCC.isLinux [
+    evdev
+  ]
+  ++ lib.optionals stdenvNoCC.isDarwin [
+    appnope
+    pyobjc-core
+    pyobjc-framework-Cocoa
+    pyobjc-framework-Quartz
   ];
 
   pythonImportsCheck = [
@@ -129,15 +189,25 @@ buildPythonPackage {
     substituteInPlace "reqs/constraints.txt" --replace-fail "PySide6-Essentials" "PySide6"
   '';
 
-  postInstall = ''
-    mkdir -p $out/share/icons/hicolor/128x128/apps
-    cp $src/plover/assets/plover.png $out/share/icons/hicolor/128x128/apps/plover.png
-
-    mkdir -p $out/share/applications
-    cp $src/linux/plover.desktop $out/share/applications/plover.desktop
-    substituteInPlace "$out/share/applications/plover.desktop" \
-      --replace-fail "Exec=plover" "Exec=$out/bin/plover"
-  '';
+  postInstall =
+    lib.optionalString stdenvNoCC.hostPlatform.isLinux ''
+      mkdir -p $out/share/icons/hicolor/128x128/apps
+      cp $src/plover/assets/plover.png $out/share/icons/hicolor/128x128/apps/plover.png
+      mkdir -p $out/share/applications
+      cp $src/linux/plover.desktop $out/share/applications/plover.desktop
+      substituteInPlace "$out/share/applications/plover.desktop" \
+        --replace-fail "Exec=plover" "Exec=$out/bin/plover"
+    ''
+    + lib.optionalString stdenvNoCC.hostPlatform.isDarwin ''
+      APP_DIR="$out/Applications/Plover.app/Contents"
+      mkdir -p $APP_DIR
+      # TODO: Replace $year
+      cp $src/osx/app_resources/Info.plist $APP_DIR/Info.plist
+      mkdir -p $APP_DIR/Resources
+      cp $src/osx/app_resources/plover.icns $APP_DIR/Resources/plover.icns
+      mkdir -p $APP_DIR/MacOS
+      makeWrapper "$out/bin/plover" "$APP_DIR/MacOS/Plover"
+    '';
 
   # See: https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/qt.section.md
   dontWrapQtApps = true;
