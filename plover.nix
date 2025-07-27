@@ -109,13 +109,12 @@ buildPythonPackage {
     qt6.wrapQtAppsHook
   ];
 
-  buildInputs =
-    [
-      qt6.qtsvg # required for rendering icons
-    ]
-    ++ lib.optionals pkgs.stdenv.isLinux [
-      qt6.qtwayland
-    ];
+  buildInputs = [
+    qt6.qtsvg # required for rendering icons
+  ]
+  ++ lib.optionals pkgs.stdenv.isLinux [
+    qt6.qtwayland
+  ];
 
   # Other Plover plugins can depend on `plover_build_utils/setup.py`, so:
   propagatedNativeBuildInputs = [
@@ -123,36 +122,35 @@ buildPythonPackage {
     pyside-tools-rcc
   ];
 
-  dependencies =
-    [
-      Babel
-      pyside6
-      xlib
-      pyserial
-      appdirs
-      wcwidth
-      setuptools
-      certifi
-      packaging
-      pkginfo
-      pygments
-      readme-renderer
-      cmarkgfm
-      requests-cache
-      requests-futures
-      plover-stroke
-      psutil
-      rtf-tokenize
-    ]
-    ++ lib.optionals stdenvNoCC.isLinux [
-      evdev
-    ]
-    ++ lib.optionals stdenvNoCC.isDarwin [
-      appnope
-      pyobjc-core
-      pyobjc-framework-Cocoa
-      pyobjc-framework-Quartz
-    ];
+  dependencies = [
+    Babel
+    pyside6
+    xlib
+    pyserial
+    appdirs
+    wcwidth
+    setuptools
+    certifi
+    packaging
+    pkginfo
+    pygments
+    readme-renderer
+    cmarkgfm
+    requests-cache
+    requests-futures
+    plover-stroke
+    psutil
+    rtf-tokenize
+  ]
+  ++ lib.optionals stdenvNoCC.isLinux [
+    evdev
+  ]
+  ++ lib.optionals stdenvNoCC.isDarwin [
+    appnope
+    pyobjc-core
+    pyobjc-framework-Cocoa
+    pyobjc-framework-Quartz
+  ];
 
   pythonImportsCheck = [
     "plover"
