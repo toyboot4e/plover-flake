@@ -36,10 +36,10 @@
     "sha256": "50b7279c66301fbce571fe074ea7340a512db98a6ba80259daa9d2643b8b6f6d"
   },
   {
-    "name": "plover-casecat-dictionary",
-    "filename": "plover_casecat_dictionary-0.1.3.tar.gz",
-    "version": "0.1.3",
-    "sha256": "949011b41c0e40695d15770b5aa111d90a96c7834bcb9aa03d4f7fc4875e7ec5"
+    "name": "plover-casecat",
+    "filename": "plover_casecat-1.0.0.tar.gz",
+    "version": "1.0.0",
+    "sha256": "34a93be8ac44aab552ccb9a9d145c0f4502f8ea1148a0b76d8ec2eb9511cf292"
   },
   {
     "name": "plover-cat",
