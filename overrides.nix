@@ -22,6 +22,7 @@
   importlib-metadata,
   inflect,
   jsonpickle,
+  kaitaistruct,
   lxml,
   numpy,
   odfpy,
@@ -120,8 +121,9 @@ final: prev: {
     meta.broken = true;
   });
 
-  plover-casecat-dictionary = prev.plover-casecat-dictionary.overridePythonAttrs (old: {
+  plover-casecat = prev.plover-casecat.overridePythonAttrs (old: {
     nativeBuildInputs = [ setuptools-scm ];
+    dependencies = [ kaitaistruct ];
   });
 
   plover-cat = prev.plover-cat.overridePythonAttrs (old: {
