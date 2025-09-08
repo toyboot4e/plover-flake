@@ -35,11 +35,11 @@
     "plover-machine-hid": {
       "flake": false,
       "locked": {
-        "lastModified": 1755202977,
-        "narHash": "sha256-3ldTcr+27GPbR1jAABCHVgYoN1F1egK2w6jVC0cpJIE=",
+        "lastModified": 1757266704,
+        "narHash": "sha256-S+NBVnLjWdINTRpNIZvGotNGiMVSnvq1NZRPnKCmZyM=",
         "owner": "dnaq",
         "repo": "plover-machine-hid",
-        "rev": "82c9e2d25bffe5ec89fc9bf6897aef2a08d69b70",
+        "rev": "db917f8b2545964fdaa2f664d1d1e2afafae96a1",
         "type": "github"
       },
       "original": {
@@ -67,11 +67,11 @@
     "plover2cat": {
       "flake": false,
       "locked": {
-        "lastModified": 1757216008,
-        "narHash": "sha256-m6gYQGPRj+DQILWHbRN780/vSEREYUQjM4s5r1zx4fs=",
+        "lastModified": 1757218352,
+        "narHash": "sha256-DFd61aS8X6fESeEBcpsivv1p2FmSS9NunI73s2Op4T0=",
         "owner": "greenwyrt",
         "repo": "plover2CAT",
-        "rev": "adbd3b0e513ad928da9ed8f4be1859083a49eda5",
+        "rev": "fd1a56086d2c99ab49e8465ce7fc408bcd6768b8",
         "type": "github"
       },
       "original": {
