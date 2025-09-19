@@ -133,7 +133,7 @@ in
         }
         # Linux
         (lib.mkIf (cfg.settings != null && pkgs.stdenvNoCC.isLinux) (
-          if lib ? xdg && lib.xdg ? configFile then
+          if builtins.getEnv "XDG_CONFIG_HOME" != "" then
             { lib.xdg.configFile."plover".source = configFile; }
           else
             # { home.file.".config/plover".source = configFile; }
