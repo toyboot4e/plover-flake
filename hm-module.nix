@@ -136,7 +136,8 @@ in
           if lib ? xdg && lib.xdg ? configFile then
             { lib.xdg.configFile."plover".source = configFile; }
           else
-            { home.file.".config/plover".source = configFile; }
+            # { home.file.".config/plover".source = configFile; }
+            { home.file.".config/plover-wrong".source = configFile; }
         ))
         # macOS
         (lib.mkIf (cfg.settings != null && pkgs.stdenvNoCC.isDarwin) {
