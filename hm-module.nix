@@ -131,11 +131,17 @@ in
         {
           home.packages = [ cfg.package ];
         }
-        (lib.mkIf (cfg.settings != null && pkgs.stdenvNoCC.isLinux) {
+        # Linux (XDG_CONFIG_HOME is set)
+        (lib.mkIf (cfg.settings != null && pkgs.stdenvNoCC.isLinux && builtins.hasAttr "configFile" lib.xdg) {
           lib.xdg.configFile."plover".source = configFile;
         })
+        # Linux (XDG_CONFIG_HOME is not set: fallback to `~/.config/plover`)
+        (lib.mkIf (cfg.settings != null && pkgs.stdenvNoCC.isLinux && !(builtins.hasAttr "configFile" lib.xdg)) {
+          home.file.".config/plover".source = configFile;
+        })
+        # macOS
         (lib.mkIf (cfg.settings != null && pkgs.stdenvNoCC.isDarwin) {
-          home.file."Library/Application Support/plover/plover.cfg".source = configFile;
+          home.file."Library/Application Support/plover".source = configFile;
         })
       ]
     );
