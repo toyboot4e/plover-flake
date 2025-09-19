@@ -26,6 +26,7 @@
   readme-renderer,
   requests-cache,
   xlib,
+  xorg,
   wcwidth,
 
   # darwin
@@ -126,6 +127,13 @@ buildPythonPackage {
     Babel
     pyside6
     xlib
+
+    xorg.libxcb
+    xorg.xcbutilwm
+    xorg.xcbutilimage
+    xorg.xcbutilkeysyms
+    xorg.xcbutilrenderutil
+
     pyserial
     appdirs
     wcwidth
