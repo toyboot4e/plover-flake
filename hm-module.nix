@@ -133,7 +133,10 @@ in
         }
         # Linux
         (lib.mkIf (cfg.settings != null && pkgs.stdenvNoCC.isLinux) (
-          { lib.xdg.configFile."plover/plover.cfg".source = configFile; }
+          if builtins.getEnv "XDG_CONFIG_HOME" != "" then
+            { lib.xdg.configFile."plover/plover.cfg".source = configFile; }
+          else
+            { home.file.".config/plover/plover.cfg".source = configFile; }
         ))
         # macOS
         (lib.mkIf (cfg.settings != null && pkgs.stdenvNoCC.isDarwin) {
