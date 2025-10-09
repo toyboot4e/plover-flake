@@ -589,9 +589,9 @@
   },
   {
     "name": "plover-websocket-server",
-    "filename": "plover_websocket_server-0.1.8.tar.gz",
-    "version": "0.1.8",
-    "sha256": "aa5b441d6825288a34163c5ba83480265505a39ee077dcad61a42a7e28338ad7"
+    "filename": "plover_websocket_server-0.1.11.tar.gz",
+    "version": "0.1.11",
+    "sha256": "fc3fcc99bbb9626506ae9db6a847b1526c62b39ebc3f90d61995bcc00d99c062"
   },
   {
     "name": "plover-windows-brightness",
