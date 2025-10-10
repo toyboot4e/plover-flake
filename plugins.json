@@ -67,9 +67,9 @@
   },
   {
     "name": "plover-combo",
-    "filename": "plover-combo-1.0.2.tar.gz",
-    "version": "1.0.2",
-    "sha256": "bc2904549704a4bc3fcff1cd8bc785b0f4d6ad44377b404e18a458322490895b"
+    "filename": "plover_combo-2.0.0.tar.gz",
+    "version": "2.0.0",
+    "sha256": "89aec370013d0b1b86d9a5f43f9d33a81fe0f698b14c195e92e5ccdb9e22ec03"
   },
   {
     "name": "plover-comment",
