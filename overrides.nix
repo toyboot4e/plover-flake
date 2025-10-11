@@ -134,11 +134,6 @@ final: prev: {
   # plover-clippy-2
   # plover-clr-trans-state
 
-  plover-combo = prev.plover-combo.overridePythonAttrs (old: {
-    # ModuleNotFoundError: No module named 'PyQt5'
-    meta.broken = true;
-  });
-
   # plover-comment
 
   plover-console-ui = prev.plover-console-ui.overridePythonAttrs (old: {
@@ -415,7 +410,11 @@ final: prev: {
 
   plover-svg-layout-display = prev.plover-svg-layout-display.overridePythonAttrs (old: {
     dependencies = [ lxml ];
-    # ModuleNotFoundError: No module named 'PyQt5'
+    pythonImportsCheck = [
+      "plover_svg_layout_display"
+      # FIXME: This should pass
+      # "plover_svg_layout_display.layout_ui"
+    ];
     meta.broken = true;
   });
 
