@@ -523,9 +523,9 @@
   },
   {
     "name": "plover-svg-layout-display",
-    "filename": "plover-svg-layout-display-0.0.7.tar.gz",
-    "version": "0.0.7",
-    "sha256": "b791e6525637c8fab56e7f5b2f390f802134fc25c560cf0475fe0d547d4c733b"
+    "filename": "plover_svg_layout_display-1.0.0.tar.gz",
+    "version": "1.0.0",
+    "sha256": "6ad9b06960c1b8e0bc6389af9cc11c0da7aa963487c6672b1faae5b7fd3be74d"
   },
   {
     "name": "plover_system_switcher",
