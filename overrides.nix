@@ -410,7 +410,11 @@ final: prev: {
 
   plover-svg-layout-display = prev.plover-svg-layout-display.overridePythonAttrs (old: {
     dependencies = [ lxml ];
-    # ModuleNotFoundError: No module named 'PyQt5'
+    pythonImportsCheck = [
+      "plover_svg_layout_display"
+      # FIXME: This should pass
+      # "plover_svg_layout_display.layout_ui"
+    ];
     meta.broken = true;
   });
 
