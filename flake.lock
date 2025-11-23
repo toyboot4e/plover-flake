@@ -2,11 +2,11 @@
   "nodes": {
     "nixpkgs": {
       "locked": {
-        "lastModified": 1763421233,
-        "narHash": "sha256-Stk9ZYRkGrnnpyJ4eqt9eQtdFWRRIvMxpNRf4sIegnw=",
+        "lastModified": 1763678758,
+        "narHash": "sha256-+hBiJ+kG5IoffUOdlANKFflTT5nO3FrrR2CA3178Y5s=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "89c2b2330e733d6cdb5eae7b899326930c2c0648",
+        "rev": "117cc7f94e8072499b0a7aa4c52084fa4e11cc9b",
         "type": "github"
       },
       "original": {
@@ -19,11 +19,11 @@
     "plover": {
       "flake": false,
       "locked": {
-        "lastModified": 1762793584,
-        "narHash": "sha256-1ZOeaSkrc9UftbQeMMOnimq3mfY0O3zL2K4jurnTGyM=",
+        "lastModified": 1763802262,
+        "narHash": "sha256-ISyMAMTV5NBXnRgmo8YQJByOGNnAeyaKr880StJ54bE=",
         "owner": "openstenoproject",
         "repo": "plover",
-        "rev": "686974243bcd5c5fdd6fab0842137219b246eee2",
+        "rev": "9220e32723ae402c28dce4ffc1281f3b0db99326",
         "type": "github"
       },
       "original": {
