@@ -40,14 +40,14 @@ If you use [home-manager](https://github.com/nix-community/home-manager), there 
 
   programs.plover = {
     enable = true;
-    package = inputs.plover-flake.packages.${pkgs.system}.plover.withPlugins (
+    package = inputs.plover-flake.packages.${pkgs.stdenv.hostPlatform.system}.plover.withPlugins (
       ps: with ps; [
         plover-lapwing-aio
       ]
     );
 
     # Or, use `plover-full` if you want Plover with all the plugins installed:
-    # package = inputs.plover-flake.packages.${pkgs.system}.plover-full;
+    # package = inputs.plover-flake.packages.${pkgs.stdenv.hostPlatform.system}.plover-full;
 
     settings = {
       "Machine Configuration" = {

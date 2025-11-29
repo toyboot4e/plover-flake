@@ -24,11 +24,11 @@ in
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = self.packages.${pkgs.system}.plover;
+      default = self.packages.${pkgs.stdenv.hostPlatform.system}.plover;
       example =
         lib.literalExpression # nix
           ''
-            inputs.plover-flake.${pkgs.system}.plover.withPlugins (ps: with ps; [
+            inputs.plover-flake.${pkgs.stdenv.hostPlatform.system}.plover.withPlugins (ps: with ps; [
               plover-lapwing-aio
               plover-console-ui
             ])
