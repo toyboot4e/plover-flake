@@ -73,7 +73,7 @@
             withPlugins =
               f: # f is a function such as (ps: with ps; [ plugin names ])
               plover'.overridePythonAttrs (old: {
-                dependencies = old.dependencies ++ (f self.ploverPlugins.${pkgs.system});
+                dependencies = old.dependencies ++ (f self.ploverPlugins.${pkgs.stdenv.hostPlatform.system});
               });
           in
           plover' // { inherit withPlugins; };
@@ -86,7 +86,7 @@
             withPlugins =
               f: # f is a function such as (ps: with ps; [ plugin names ])
               plover'.overridePythonAttrs (old: {
-                dependencies = old.dependencies ++ (f self.ploverPlugins.${pkgs.system});
+                dependencies = old.dependencies ++ (f self.ploverPlugins.${pkgs.stdenv.hostPlatform.system});
               });
           in
           plover' // { inherit withPlugins; };
