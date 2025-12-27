@@ -378,6 +378,12 @@
     "sha256": "10b408ec2b97996d50174817e35f108a2b209f140426de1b3a9003740d02f326"
   },
   {
+    "name": "plover-repeat",
+    "filename": "plover_repeat-0.2.0.tar.gz",
+    "version": "0.2.0",
+    "sha256": "3283dfc9f7ea817db24def4c7c2154959d04af5ae0940f231cca33268ab1b30a"
+  },
+  {
     "name": "plover-retro-case",
     "filename": "plover_retro_case-0.1.2.tar.gz",
     "version": "0.1.2",
