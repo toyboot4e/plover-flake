@@ -457,9 +457,9 @@
   },
   {
     "name": "plover-search-translation",
-    "filename": "plover-search-translation-0.6.0.tar.gz",
-    "version": "0.6.0",
-    "sha256": "4520dcbccbd9540ba963025893bc1b1c123109e8de1de4c2ac89715a38e7e28f"
+    "filename": "plover_search_translation-0.7.0.tar.gz",
+    "version": "0.7.0",
+    "sha256": "a3520e2175dbf4aecea05afb4e7d8388ce73fee76c3ff9ed1b76a5616485c840"
   },
   {
     "name": "plover-sound",
