@@ -361,9 +361,9 @@
   },
   {
     "name": "plover-python-dictionary",
-    "filename": "plover_python_dictionary-1.2.0.tar.gz",
-    "version": "1.2.0",
-    "sha256": "dbfcdd59b14797efe7b8f5378bbdc25c0985cbb237ed772a2fa1e4f0784d53a5"
+    "filename": "plover_python_dictionary-1.2.1.tar.gz",
+    "version": "1.2.1",
+    "sha256": "2a0215445c28fcbfd56f5acafbe8f5c5a7dfbfc51a49c5de7caa52f2f93f223d"
   },
   {
     "name": "plover-q-and-a",
