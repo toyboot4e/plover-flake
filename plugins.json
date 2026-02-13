@@ -559,9 +559,9 @@
   },
   {
     "name": "plover-touch-tablets",
-    "filename": "plover_touch_tablets-0.0.0.tar.gz",
-    "version": "0.0.0",
-    "sha256": "26cc9cc9f2e00a0bdc9e4678bc2ac69c99497fe30a93a11f38faf824cac1ea82"
+    "filename": "plover_touch_tablets-0.0.2.tar.gz",
+    "version": "0.0.2",
+    "sha256": "f3191456a3e8ae5fdc3d28efa49ea4664061cd210585c0fc067955ae37c77d57"
   },
   {
     "name": "plover-trayicon",
