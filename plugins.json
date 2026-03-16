@@ -498,6 +498,12 @@
     "sha256": "61dc4d853c2f127d426e1cc3a893ffd9884a26d249ccb4bdd137998168fad635"
   },
   {
+    "name": "plover-steno-dojo",
+    "filename": "plover_steno_dojo-0.3.0.tar.gz",
+    "version": "0.3.0",
+    "sha256": "ba2627fac787eda0c3ffcb0424aeaea1a52bfe4b09b71b5ed24b7ce500265de9"
+  },
+  {
     "name": "plover-steno-engine-hooks-logger",
     "filename": "plover_steno_engine_hooks_logger-0.3.6.tar.gz",
     "version": "0.3.6",
