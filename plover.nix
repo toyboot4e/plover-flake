@@ -82,7 +82,7 @@ buildPythonPackage {
   ];
 
   buildInputs = [
-    qt6.qtsvg # required for rendering icons
+    # qt6.qtsvg # required for rendering icons
   ]
   ++ lib.optionals pkgs.stdenv.isLinux [
     qt6.qtwayland
