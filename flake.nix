@@ -22,6 +22,9 @@
       url = "github:greenwyrt/plover2CAT";
       flake = false;
     };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+    };
   };
 
   outputs =
@@ -35,6 +38,9 @@
       systems = lib.systems.flakeExposed;
       pkgsFor = lib.genAttrs systems (system: import nixpkgs { inherit system; });
       forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
+      treefmtEval = forEachSystem (
+        pkgs: inputs.treefmt-nix.lib.evalModule pkgs { programs.nixfmt.enable = true; }
+      );
     in
     {
       devShells = forEachSystem (pkgs: {
@@ -47,7 +53,13 @@
         };
       });
 
-      formatter = forEachSystem (pkgs: pkgs.nixfmt-tree);
+      formatter = forEachSystem (
+        pkgs: treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper
+      );
+
+      checks = forEachSystem (pkgs: {
+        formatting = treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.check self;
+      });
 
       ploverPlugins = forEachSystem (
         pkgs:
