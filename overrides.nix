@@ -370,7 +370,7 @@ final: prev: {
   plover-sound = prev.plover-sound.overridePythonAttrs (old: rec {
     pname = "plover-sound";
     version = "0.0.4";
-        src = fetchPypi rec {
+    src = fetchPypi rec {
       inherit pname version;
       sha256 = "sha256-ZVn54enmC8ouxMTRHeNVudHSZUpUsDCMpUEQQunVjS4=";
     };
