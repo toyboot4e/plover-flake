@@ -72,16 +72,23 @@
 
         plover-full =
           let
-            plover' = plover.withPlugins (
-              ps: builtins.filter (x: x ? meta && !x.meta.broken) (builtins.attrValues ps)
+            availablePloverPlugins = builtins.filter (x: x ? meta && !x.meta.broken) (
+              builtins.attrValues self.ploverPlugins.${pkgs.stdenv.hostPlatform.system}
             );
+            plover' = pkgs.python3Packages.callPackage ./plover.nix { inherit inputs; };
+            plover'' = plover'.overridePythonAttrs (old: {
+              dependencies = old.dependencies ++ availablePloverPlugins;
+            });
             withPlugins =
               f: # f is a function such as (ps: with ps; [ plugin names ])
               plover'.overridePythonAttrs (old: {
-                dependencies = old.dependencies ++ (f self.ploverPlugins.${pkgs.stdenv.hostPlatform.system});
+                dependencies =
+                  old.dependencies
+                  ++ availablePloverPlugins
+                  ++ (f self.ploverPlugins.${pkgs.stdenv.hostPlatform.system});
               });
           in
-          plover' // { inherit withPlugins; };
+          plover'' // { inherit withPlugins; };
 
         update = pkgs.callPackage ./update.nix { inherit inputs; };
       });
