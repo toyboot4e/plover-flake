@@ -367,13 +367,23 @@ final: prev: {
     meta.broken = true;
   });
 
-  plover-sound = prev.plover-sound.overridePythonAttrs (old: {
+  plover-sound = prev.plover-sound.overridePythonAttrs (old: rec {
+    pname = "plover-sound";
+    version = "0.0.4";
+        src = fetchPypi rec {
+      inherit pname version;
+      sha256 = "sha256-ZVn54enmC8ouxMTRHeNVudHSZUpUsDCMpUEQQunVjS4=";
+    };
     dependencies = [
       pygame
       numpy
     ];
-    # ModuleNotFoundError: No module named 'PyQt5'
-    meta.broken = true;
+    postPatch = ''
+      substituteInPlace plover_sound/tool.py \
+        --replace-fail "from PyQt5" "from PySide6" \
+        --replace-fail "ICON = 'asset:plover_sound:icon.svg'" \
+          "ICON = os.path.join(os.path.dirname(__file__), 'icon.svg')"
+    '';
   });
 
   plover-spanish-mqd = prev.plover-spanish-mqd.overridePythonAttrs (old: {
