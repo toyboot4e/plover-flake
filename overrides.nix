@@ -1,5 +1,6 @@
 {
   buildPythonPackage,
+  fetchFromGitHub,
   fetchPypi,
   inputs,
   lib,
@@ -370,7 +371,7 @@ final: prev: {
   plover-sound = prev.plover-sound.overridePythonAttrs (old: rec {
     pname = "plover-sound";
     version = "0.0.4";
-    src = fetchPypi rec {
+    src = fetchPypi {
       inherit pname version;
       sha256 = "sha256-ZVn54enmC8ouxMTRHeNVudHSZUpUsDCMpUEQQunVjS4=";
     };
@@ -424,13 +425,22 @@ final: prev: {
   # plover-stitching
 
   plover-svg-layout-display = prev.plover-svg-layout-display.overridePythonAttrs (old: {
+    # Because `layout_ui.py` is not in the PyPi distribution, we're fetching from GitHub:
+    # https://github.com/opensteno/plover_svg_layout_display/issues/4
+    src = fetchFromGitHub {
+      owner = "opensteno";
+      repo = "plover_svg_layout_display";
+      rev = "50790c9b7f725dbb841da04a0fd76c5d1e875d38";
+      hash = "sha256-/w22yzKwPnobDdCkuDFJ9atjfe3PuAiRCCWIw3I00/8=";
+    };
     dependencies = [ lxml ];
+    postPatch = ''
+      substituteInPlace "pyproject.toml" --replace-fail "plover[gui_qt]>=5.0.0.dev3" "plover"
+    '';
     pythonImportsCheck = [
       "plover_svg_layout_display"
-      # FIXME: This should pass
-      # "plover_svg_layout_display.layout_ui"
+      "plover_svg_layout_display.layout_ui" # not in PyPi version
     ];
-    meta.broken = true;
   });
 
   # plover_system_switcher
