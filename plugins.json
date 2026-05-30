@@ -517,9 +517,9 @@
   },
   {
     "name": "plover-stenograph",
-    "filename": "plover-stenograph-2.1.tar.gz",
-    "version": "2.1",
-    "sha256": "5a2e821a487e03110766d927042686530c33ed33e6b9bd26d99591ee724eeb02"
+    "filename": "plover_stenograph-2.1.1.tar.gz",
+    "version": "2.1.1",
+    "sha256": "6eab8588cbd85384818fe35dbfe8f5ae4abccda9484a2f7daee944c10e55c4b6"
   },
   {
     "name": "plover-stenohid-test",
