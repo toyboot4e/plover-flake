@@ -10,9 +10,9 @@ This is an experimental flake which packages Plover for Nix, along with support 
 For a quick try, use `nix run`:
 
 ```sh
-$ nix run github:openstenoproject/plover-flake # with no plugin
+$ nix run github:openstenoproject/plover-flake # Plover with no plugin
 
-$ # or, with plugins:
+$ # or, Plover with plugins:
 $ nix run github:openstenoproject/plover-flake#plover-full
 ```
 
