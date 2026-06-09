@@ -1,26 +1,48 @@
-# A flake for plover with support for plugins
+# A flake for Plover with support for plugins
 
-This is an experimental flake which packages plover for nix, along with support for plugins from the plugins registry.
+This is an experimental flake which packages Plover for Nix, along with support for plugins from the [Plover Plugins Registry](https://github.com/opensteno/plover_plugins_registry).
 
-> [!NOTE]
-> This flake recently upgraded plover to switch from QT5 to QT6, which broke many GUI plugins. If you wish to keep using the old version of plover, switch to an older version of this flake by changing the input URL to `github:openstenoproject/plover-flake/6807afead2fb9e402dddb038d45b38e6226e94d1`. The documentation for the old version can be found [here](https://github.com/openstenoproject/plover-flake/tree/6807afead2fb9e402dddb038d45b38e6226e94d1).
+## Quick start
+
+For a quick try, use `nix run`:
+
+```sh
+# start Plover with no plugin (default):
+nix run github:openstenoproject/plover-flake
+
+# start Plover with plugins:
+nix run github:openstenoproject/plover-flake#plover-full
+```
 
 ## Usage
 
-Add this flake to your flake inputs, e.g. `inputs.plover-flake.url = "github:openstenoproject/plover-flake";`
-
-Then a plover derivation containing the plugins you want can be built with
+Add this flake to your flake inputs:
 
 ```nix
+{
+  inputs = {
+    plover-flake.url = "github:openstenoproject/plover-flake";
+  };
+  # ..
+}
+```
+
+> [!NOTE]
+> We upgraded Qt 5 to Qt 6 in April 2025 ([old version of README](https://github.com/openstenoproject/plover-flake/tree/6807afead2fb9e402dddb038d45b38e6226e94d1)). If you wish to keep using the old version of Plover, pin the input URL to `github:openstenoproject/plover-flake/6807afead2fb9e402dddb038d45b38e6226e94d1`.
+
+Then a Plover derivation containing the plugins you want can be built with the following expression:
+
+```nix
+# ${system} is your platform (e.g., `x86_64-linux`)
 inputs.plover-flake.packages.${system}.plover.withPlugins (ps: with ps; [
   plover-lapwing-aio
   plover-console-ui
-]);
+])
 ```
 
-Where `ps` is an attribute set containing all plugins from the plugin registry, as well as some extra plugins.
+`ps` is an attribute set containing every plugin from the registry.
 
-Alternatively, use `plover-full` package, where all the plugins are installed:
+Alternatively, use the `plover-full` package, which bundles every non-broken plugin:
 
 ```nix
 inputs.plover-flake.packages.${system}.plover-full
@@ -49,6 +71,7 @@ If you use [home-manager](https://github.com/nix-community/home-manager), there 
     # Or, use `plover-full` if you want Plover with all the plugins installed:
     # package = inputs.plover-flake.packages.${pkgs.stdenv.hostPlatform.system}.plover-full;
 
+    # (optional) Generate `plover.cfg`:
     settings = {
       "Machine Configuration" = {
         machine_type = "Gemini PR";
@@ -60,17 +83,17 @@ If you use [home-manager](https://github.com/nix-community/home-manager), there 
 }
 ```
 
-If you don't want nix to manage the configuration of plover, you can omit the `settings` value.
+If you don't want Nix to manage the configuration of Plover, you can omit the `settings` value.
 
 ## NixOS configuration
 
-To let Plover find serial ports, add your user to the `dialout` user group:
+To let Plover find serial ports, add your user to the `dialout` group:
 
 ```nix
 users.users."YOUR USER".extraGroups = [ "dialout" ];
 ```
 
-If you use wayland, you will want to add the following snippet to your NixOS system configuration.
+If you use Wayland, also add a udev rule for `uinput` and put your user in the `input` group so Plover can emit characters:
 
 ```nix
 services.udev.extraRules = ''
@@ -80,8 +103,6 @@ services.udev.extraRules = ''
 users.users."YOUR USER".extraGroups = [ "input" ];
 ```
 
-This gives your user the necessary permissions to output characters through plover.
-
 ## Troubleshooting
 
-If a specific plugin fails to build it is most likely because of a missing dependency. In that case that dependency can be added to overrides.nix, any pull requests doing so are welcome.
+If a specific plugin fails to build it is most likely because of a missing dependency. In that case that dependency can be added to `overrides.nix`, any pull requests doing so are welcome.
