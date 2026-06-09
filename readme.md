@@ -19,7 +19,12 @@ $ nix run github:openstenoproject/plover-flake#plover-full
 Add this flake to your flake inputs:
 
 ```nix
-plover-flake.url = "github:openstenoproject/plover-flake";
+{
+  inputs = {
+    plover-flake.url = "github:openstenoproject/plover-flake";
+  };
+  # ..
+}
 ```
 
 > [!NOTE]
