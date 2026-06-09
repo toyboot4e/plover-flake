@@ -7,11 +7,11 @@ This is an experimental flake which packages Plover for Nix, along with support 
 For a quick try, use `nix run`:
 
 ```sh
-$ # start Plover with no plugin (default):
-$ nix run github:openstenoproject/plover-flake
+# start Plover with no plugin (default):
+nix run github:openstenoproject/plover-flake
 
-$ # start Plover with plugins:
-$ nix run github:openstenoproject/plover-flake#plover-full
+# start Plover with plugins:
+nix run github:openstenoproject/plover-flake#plover-full
 ```
 
 ## Usage
