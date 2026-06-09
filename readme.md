@@ -106,3 +106,16 @@ users.users."YOUR USER".extraGroups = [ "input" ];
 ## Troubleshooting
 
 If a specific plugin fails to build it is most likely because of a missing dependency. In that case that dependency can be added to `overrides.nix`, any pull requests doing so are welcome.
+
+## Q&A
+
+### The fonts are too small
+
+You may want to set `QT_SCALE_FACTOR` for DPI scaling:
+
+```sh
+QT_SCALE_FACTOR="1.5" nix run .#plover
+```
+
+You could set it via home-manager session variables, or you may want to wrap `plover` with a shell script. If you want builtin support, feel free to request!
+
