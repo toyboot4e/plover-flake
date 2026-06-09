@@ -3,7 +3,7 @@
 This is an experimental flake which packages Plover for Nix, along with support for plugins from the [Plover Plugins Registry](https://github.com/opensteno/plover_plugins_registry).
 
 > [!NOTE]
-> We upgraded Qt 5 to Qt 6 in April 2025. If you wish to keep using the old version of Plover, pin the input URL to `github:openstenoproject/plover-flake/6807afead2fb9e402dddb038d45b38e6226e94d1` ([old version of README](https://github.com/openstenoproject/plover-flake/tree/6807afead2fb9e402dddb038d45b38e6226e94d1)).
+> We upgraded Qt 5 to Qt 6 in April 2025 ([old version of README](https://github.com/openstenoproject/plover-flake/tree/6807afead2fb9e402dddb038d45b38e6226e94d1)). If you wish to keep using the old version of Plover, pin the input URL to `github:openstenoproject/plover-flake/6807afead2fb9e402dddb038d45b38e6226e94d1`.
 
 ## Quick start
 
