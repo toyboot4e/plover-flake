@@ -85,6 +85,18 @@
       treefmtEval = forEachSystem (
         pkgs: inputs.treefmt-nix.lib.evalModule pkgs { programs.nixfmt.enable = true; }
       );
+
+      # A Python package set extension injecting `plover` and all the plugins
+      pythonOverlay = import ./python-overlay.nix { inherit inputs lib; };
+      ploverPythonFor =
+        pkgs:
+        let
+          python = pkgs.python3.override {
+            self = python;
+            packageOverrides = pythonOverlay;
+          };
+        in
+        python;
     in
     {
       devShells = forEachSystem (pkgs: {
@@ -105,49 +117,38 @@
         formatting = treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.check self;
       });
 
-      ploverPlugins = forEachSystem (
+      # The Python package set extension (`final: prev: { .. }`) that adds
+      # `plover` and all the plugins. Compose it with your own overrides via
+      # `python3.override { packageOverrides = ..; }`.
+      pythonPackagesOverlay = pythonOverlay;
+
+      ploverPlugins = forEachSystem (pkgs: (ploverPythonFor pkgs).pkgs.ploverPlugins);
+
+      packages = forEachSystem (
         pkgs:
-        pkgs.python3Packages.callPackage ./plugins.nix {
-          plover = pkgs.python3Packages.callPackage ./plover.nix { inherit inputs; };
-          inherit inputs;
+        let
+          python = ploverPythonFor pkgs;
+          withPlugins =
+            f: # f is a function such as (ps: with ps; [ plugin names ])
+            pkgs.callPackage ./with-plugins.nix { inherit python; } f;
+          availablePloverPlugins = builtins.filter (x: x ? meta && !x.meta.broken) (
+            builtins.attrValues python.pkgs.ploverPlugins
+          );
+        in
+        rec {
+          default = plover;
+
+          plover = (python.pkgs.toPythonApplication python.pkgs.plover) // {
+            inherit withPlugins;
+          };
+
+          plover-full = (withPlugins (ps: availablePloverPlugins)) // {
+            withPlugins = f: withPlugins (ps: availablePloverPlugins ++ f ps);
+          };
+
+          update = pkgs.callPackage ./update.nix { inherit inputs; };
         }
       );
-
-      packages = forEachSystem (pkgs: rec {
-        default = plover;
-        plover =
-          let
-            plover' = pkgs.python3Packages.callPackage ./plover.nix { inherit inputs; };
-            withPlugins =
-              f: # f is a function such as (ps: with ps; [ plugin names ])
-              plover'.overridePythonAttrs (old: {
-                dependencies = old.dependencies ++ (f self.ploverPlugins.${pkgs.stdenv.hostPlatform.system});
-              });
-          in
-          plover' // { inherit withPlugins; };
-
-        plover-full =
-          let
-            availablePloverPlugins = builtins.filter (x: x ? meta && !x.meta.broken) (
-              builtins.attrValues self.ploverPlugins.${pkgs.stdenv.hostPlatform.system}
-            );
-            plover' = pkgs.python3Packages.callPackage ./plover.nix { inherit inputs; };
-            plover'' = plover'.overridePythonAttrs (old: {
-              dependencies = old.dependencies ++ availablePloverPlugins;
-            });
-            withPlugins =
-              f: # f is a function such as (ps: with ps; [ plugin names ])
-              plover'.overridePythonAttrs (old: {
-                dependencies =
-                  old.dependencies
-                  ++ availablePloverPlugins
-                  ++ (f self.ploverPlugins.${pkgs.stdenv.hostPlatform.system});
-              });
-          in
-          plover'' // { inherit withPlugins; };
-
-        update = pkgs.callPackage ./update.nix { inherit inputs; };
-      });
 
       homeManagerModules = rec {
         plover = import ./hm-module.nix self;

@@ -40,12 +40,30 @@ inputs.plover-flake.packages.${system}.plover.withPlugins (ps: with ps; [
 ])
 ```
 
-`ps` is an attribute set containing every plugin from the registry.
+`ps` is a Python package set with every plugin from the registry injected into it, so you can also pick plain Python packages from it. Under the hood, `withPlugins` wraps a `python.withPackages` environment containing Plover and the selected plugins, and only exposes the Plover-related executables.
 
 Alternatively, use the `plover-full` package, which bundles every non-broken plugin:
 
 ```nix
 inputs.plover-flake.packages.${system}.plover-full
+```
+
+### Python package set overlay
+
+Plover and the plugins are injected into a Python package set with an overlay (`packageOverrides`), which is exposed as the `pythonPackagesOverlay` flake output. If you want to add or override packages yourself, compose it with your own extension:
+
+```nix
+let
+  python = pkgs.python3.override {
+    self = python;
+    packageOverrides = nixpkgs.lib.composeExtensions inputs.plover-flake.pythonPackagesOverlay (
+      final: prev: {
+        # your packages / overrides here
+      }
+    );
+  };
+in
+python.withPackages (ps: with ps; [ plover plover-lapwing-aio ])
 ```
 
 ## home-manager module
