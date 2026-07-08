@@ -1,53 +1,47 @@
-{
-  buildPythonPackage,
-  fetchFromGitHub,
-  fetchPypi,
-  inputs,
-  lib,
-  qt6,
-  stdenvNoCC,
-  writeShellScriptBin,
-
-  # build-system
-  poetry-core,
-  setuptools,
-  setuptools-scm,
-
-  # dependencies
-  aiohttp,
-  dulwich,
-  evdev,
-  hatchling,
-  hidapi,
-  hjson,
-  importlib-metadata,
-  inflect,
-  jsonpickle,
-  kaitaistruct,
-  lxml,
-  numpy,
-  odfpy,
-  plover,
-  prompt-toolkit,
-  pyfiglet,
-  pygame-ce,
-  pypandoc,
-  pyparsing,
-  pysdl2,
-  pystardict,
-  pystray,
-  python-rtmidi,
-  pyudev,
-  tomli,
-  ruamel-yaml,
-  xkbcommon,
-  websocket-client,
-
-  # test
-  pytest,
-  pytestCheckHook,
-}:
+# A Python package set extension (`final: prev: { .. }`) with manual fixes
+# and additions for the plugins generated from the registry.
+{ inputs }:
+final: prev:
 let
+  inherit (final.pkgs) fetchFromGitHub stdenvNoCC;
+  inherit (final)
+    # build-system
+    buildPythonPackage
+    fetchPypi
+    poetry-core
+    setuptools
+    setuptools-scm
+
+    # dependencies
+    aiohttp
+    dulwich
+    evdev
+    hatchling
+    hjson
+    inflect
+    jsonpickle
+    kaitaistruct
+    lxml
+    numpy
+    odfpy
+    plover
+    prompt-toolkit
+    pyfiglet
+    pygame-ce
+    pypandoc
+    pyparsing
+    pysdl2
+    pystardict
+    pystray
+    python-rtmidi
+    tomli
+    ruamel-yaml
+    xkbcommon
+    websocket-client
+
+    # test
+    pytest
+    ;
   spylls = buildPythonPackage rec {
     pname = "spylls";
     version = "0.1.7";
@@ -85,7 +79,7 @@ let
     ];
   };
 in
-final: prev: {
+{
   # alleycat-link
 
   plover-pinchord = prev.plover-pinchord.overridePythonAttrs (old: {

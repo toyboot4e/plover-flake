@@ -2,21 +2,14 @@
 # and every plugin from the Plover plugins registry into the package set.
 # Apply it with `python3.override { packageOverrides = ..; }` or via
 # `pythonPackagesExtensions` in a nixpkgs overlay.
+#
+# NOTE: The attribute names of this extension's output must not depend on the
+# attribute names of `final` (e.g. via `final.callPackage` in name position),
+# or evaluating the package set runs into infinite recursion. This is why
+# `extra-plugins.nix` and `overrides.nix` are imported and applied directly.
 { inputs, lib }:
 final: prev:
 let
-  # Like `final.callPackage`, but resolves the arguments lazily via
-  # `builtins.functionArgs`: the attribute names of this extension's output
-  # must not depend on the attribute names of `final`, or evaluating the
-  # package set runs into infinite recursion.
-  callLazily =
-    path: extraArgs:
-    let
-      fn = import path;
-      resolve = name: _: extraArgs.${name} or (final.${name} or final.pkgs.${name});
-    in
-    fn (builtins.mapAttrs resolve (builtins.functionArgs fn));
-
   pluginSpecs = builtins.fromJSON (builtins.readFile ./plugins.json);
 
   makePloverPlugin =
@@ -40,10 +33,9 @@ let
     }) pluginSpecs
   );
 
-  extraPlugins = callLazily ./extra-plugins.nix { inherit inputs; };
+  extraPlugins = import ./extra-plugins.nix { inherit inputs; } final prev;
 
-  # `overrides.nix` evaluates to an extension (`final: prev: { .. }`) itself
-  overrides = callLazily ./overrides.nix { inherit inputs; };
+  overrides = import ./overrides.nix { inherit inputs; };
 
   pluginsBase = extraPlugins // basicPlugins;
   ploverPlugins = pluginsBase // overrides final pluginsBase;
