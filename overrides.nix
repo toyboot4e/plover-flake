@@ -30,7 +30,7 @@
   plover,
   prompt-toolkit,
   pyfiglet,
-  pygame,
+  pygame-ce,
   pypandoc,
   pyparsing,
   pysdl2,
@@ -219,6 +219,7 @@ final: prev: {
     in
     prev.plover-emoji.overridePythonAttrs (old: {
       dependencies = [
+        # pkg_resources is injected via `plover.nix`
         simplefuzzyset
       ];
     });
@@ -338,14 +339,7 @@ final: prev: {
   # plover-portuguese
   # plover-python-dictionary
   # plover-q-and-a
-
-  plover-regenpfeifer = prev.plover-regenpfeifer.overridePythonAttrs (old: {
-    dependencies = [
-      pygame
-      numpy
-    ];
-  });
-
+  # plover-regenpfeifer
   # plover-retro-case
   # plover-retro-everything
   # plover-retro-quotes
@@ -382,19 +376,29 @@ final: prev: {
       sha256 = "sha256-ZVn54enmC8ouxMTRHeNVudHSZUpUsDCMpUEQQunVjS4=";
     };
     dependencies = [
-      pygame
+      pygame-ce
       numpy
     ];
     postPatch = ''
+      substituteInPlace setup.cfg --replace-fail 'pygame' 'pygame-ce'
       substituteInPlace plover_sound/tool.py \
         --replace-fail "from PyQt5" "from PySide6" \
         --replace-fail "ICON = 'asset:plover_sound:icon.svg'" \
           "ICON = os.path.join(os.path.dirname(__file__), 'icon.svg')"
+      # Prefer `asset:` URI and do not preserve absolute path to `/nix/store`
+      substituteInPlace plover_sound/extension.py \
+        --replace-fail "   default_sample_path = resource_filename(default_sample_path)" \
+          "   pass" \
+        --replace-fail "raise Exception(\"Couldn't find audio sample file\")" \
+          "self.sample_path = default_sample_path"
     '';
   });
 
   plover-spanish-mqd = prev.plover-spanish-mqd.overridePythonAttrs (old: {
     dependencies = [ final.plover-python-dictionary ];
+    postPatch = ''
+      substituteInPlace pyproject.toml --replace-fail 'plover~=5.3.0' plover
+    '';
   });
 
   plover-spanish-system-eo-variant = prev.plover-spanish-system-eo-variant.overridePythonAttrs (old: {
