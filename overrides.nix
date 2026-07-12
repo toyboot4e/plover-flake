@@ -142,7 +142,7 @@ in
 
   plover-dict-commands.nativeBuildInputs = [ setuptools-scm ];
 
-  # `plover_build_utils.setup` does not export `Test`. Also the got the following error:
+  # `plover_build_utils.setup` does not export `Test`. Also got the following error:
   # AttributeError: module 'plover_build_utils.pyqt' has no attribute 'fix_icons'
   plover-dictionary-builder.meta.broken = true;
 
@@ -351,7 +351,7 @@ in
   # ImportError: cannot import name 'Test' from 'plover_build_utils.setup'
   plover-wpm-meter.meta.broken = true;
 
-  # `plover.oslayer.xkeyboardcontrol` doen't exist
+  # `plover.oslayer.xkeyboardcontrol` doesn't exist
   plover-xtest-input.meta.broken = true;
 
   plover-yaml-dictionary.dependencies = [ ruamel-yaml ];
