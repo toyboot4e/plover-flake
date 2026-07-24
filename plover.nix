@@ -73,14 +73,14 @@ let
   });
   plover-stroke = buildPythonPackage {
     pname = "plover_stroke";
-    version = "master";
+    version = "0-unstable-main"; # bypass `pythonMetadataCheckHook`
     src = inputs.plover-stroke;
     pyproject = true;
     build-system = [ setuptools ];
   };
   rtf-tokenize = buildPythonPackage {
     pname = "rtf_tokenize";
-    version = "master";
+    version = "0-unstable-main"; # bypass `pythonMetadataCheckHook`
     src = inputs.rtf-tokenize;
     pyproject = true;
     build-system = [ setuptools ];
@@ -98,7 +98,7 @@ let
 in
 buildPythonPackage {
   pname = "plover";
-  version = "master";
+  version = "0-unstable-main"; # bypass `pythonMetadataCheckHook`
   src = inputs.plover;
   pyproject = true;
   build-system = [ setuptools ];

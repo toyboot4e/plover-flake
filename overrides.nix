@@ -86,7 +86,9 @@ let
   };
 in
 final: prev: {
-  # alleycat-link
+  alleycat-link = prev.alleycat-link.overridePythonAttrs (old: {
+    version = "0-unstable-main"; # Bypass `pythonMetadataCheckHook`
+  });
 
   plover-pinchord = prev.plover-pinchord.overridePythonAttrs (old: {
     dependencies = [ final.plover-python-dictionary ];
@@ -94,7 +96,7 @@ final: prev: {
 
   plover2cat = buildPythonPackage {
     pname = "plover2cat";
-    version = "master";
+    version = "0-unstable-main"; # Bypass `pythonMetadataCheckHook`
     src = inputs.plover2cat;
     pyproject = true;
     build-system = [ setuptools ];
