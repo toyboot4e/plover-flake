@@ -170,7 +170,7 @@ buildPythonPackage {
     "plover.messages.fr.LC_MESSAGES"
     "plover.messages.it.LC_MESSAGES"
     "plover.messages.nl.LC_MESSAGES"
-    "plover.messages.zh_tw.LC_MESSAGES"
+    "plover.messages.zh_TW.LC_MESSAGES"
     "plover.meta"
     "plover.oslayer"
     "plover.oslayer.linux"
