@@ -291,21 +291,13 @@ in
   plover-stenohid-test.meta.broken = true;
 
   plover-svg-layout-display = {
-    # Because `layout_ui.py` is not in the PyPi distribution, we're fetching from GitHub:
-    # https://github.com/opensteno/plover_svg_layout_display/issues/4
-    src = fetchFromGitHub {
-      owner = "opensteno";
-      repo = "plover_svg_layout_display";
-      rev = "50790c9b7f725dbb841da04a0fd76c5d1e875d38";
-      hash = "sha256-/w22yzKwPnobDdCkuDFJ9atjfe3PuAiRCCWIw3I00/8=";
-    };
     dependencies = [ lxml ];
     postPatch = ''
       substituteInPlace "pyproject.toml" --replace-fail "plover[gui_qt]>=5.0.0.dev3" "plover"
     '';
     pythonImportsCheck = [
       "plover_svg_layout_display"
-      "plover_svg_layout_display.layout_ui" # not in PyPi version
+      "plover_svg_layout_display.layout_ui"
     ];
   };
 
