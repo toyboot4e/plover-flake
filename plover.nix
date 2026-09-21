@@ -184,8 +184,10 @@ buildPythonPackage {
   ];
 
   # plover requires xkbcommon<1.1, but nixpkgs has 1.5.1
+  # plover requires PySide6>=6.11.2, but nixpkgs has 6.11.0
   postPatch = ''
     substituteInPlace "reqs/dist.txt" --replace-fail "xkbcommon<1.1;" "xkbcommon<=1.5.1;"
+    substituteInPlace "pyproject.toml" --replace-fail '"PySide6>=6.11.2"' '"PySide6"'
   '';
 
   postInstall =
