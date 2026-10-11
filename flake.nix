@@ -37,48 +37,11 @@
       inherit (nixpkgs) lib;
       systems = lib.systems.flakeExposed;
 
-      # [HACK]
-      # Override cctools `ld` with LLVM's `lld` to avoid Qt 6.11 modules with naive Darwin plugins such as WebKit.
-      # We patch `python.pkgs.qt6` rather than `pkgs.qt6`, because `overrideScope` on the latter drops its `.override`,
-      # which `python-packages.nix` calls.
-      qtLldDarwinOverlay =
-        final: prev:
-        lib.optionalAttrs prev.stdenv.hostPlatform.isDarwin {
-          pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-            (
-              pyFinal: pyPrev:
-              let
-                withLld =
-                  drv:
-                  drv.overrideAttrs (old: {
-                    nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ final.llvmPackages.lld ];
-                    env = (old.env or { }) // {
-                      NIX_CFLAGS_LINK = "-fuse-ld=lld";
-                    };
-                  });
-              in
-              {
-                pyside6 = withLld pyPrev.pyside6;
-                qt6 = pyPrev.qt6.overrideScope (
-                  _qtFinal: qtPrev:
-                  lib.genAttrs [
-                    "qtwebview"
-                    "qtspeech"
-                    "qtconnectivity"
-                    "qtpositioning"
-                    "qtlocation"
-                  ] (name: withLld qtPrev.${name})
-                );
-              }
-            )
-          ];
-        };
-
       pkgsFor = lib.genAttrs systems (
         system:
         import nixpkgs {
           inherit system;
-          overlays = [ qtLldDarwinOverlay ];
+          overlays = [ ];
         }
       );
       forEachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
