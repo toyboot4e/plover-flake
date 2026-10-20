@@ -6,6 +6,7 @@
   pkgs,
   stdenvNoCC,
   qt6,
+  rustPlatform,
   writeShellScriptBin,
 
   # build-system
@@ -15,7 +16,6 @@
   appdirs,
   babel,
   certifi,
-  cmarkgfm,
   evdev,
   hidapi,
   jaraco-text,
@@ -62,6 +62,26 @@ let
       jaraco-text
       platformdirs
     ];
+  };
+
+  # readme-renderer>=45 renders Markdown with comrak
+  comrak = buildPythonPackage rec {
+    pname = "comrak";
+    version = "0.0.16";
+    pyproject = true;
+    src = fetchPypi {
+      inherit pname version;
+      hash = "sha256-o6J+HzTGZXKqJcnfPU5li5U+PRxRE7+nCUztU1IL+ds=";
+    };
+    cargoDeps = rustPlatform.fetchCargoVendor {
+      inherit pname version src;
+      hash = "sha256-FVburduePJwF8CdaEo0gn7wVqJUDJwYX7QOngPal/fw=";
+    };
+    nativeBuildInputs = with rustPlatform; [
+      cargoSetupHook
+      maturinBuildHook
+    ];
+    pythonImportsCheck = [ "comrak" ];
   };
 
   # python-hidraw does not use hidapi by default
@@ -136,7 +156,7 @@ buildPythonPackage {
     pkginfo
     pygments
     readme-renderer
-    cmarkgfm
+    comrak
     requests-cache
     requests-futures
     plover-stroke
@@ -210,7 +230,7 @@ buildPythonPackage {
       makeWrapper "$out/bin/plover" "$APP_DIR/MacOS/Plover"
     '';
 
-  # See: https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/qt.section.md
+  # See: https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/et.section.md
   dontWrapQtApps = true;
   preFixup = ''
     wrapQtApp "$out/bin/plover"
