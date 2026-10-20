@@ -64,6 +64,18 @@ let
     ];
   };
 
+  # readme-renderer>=45 renders Markdown with comrak, whose Python bindings nixpkgs lacks
+  readme-renderer-44 = readme-renderer.overridePythonAttrs {
+    version = "44.0";
+    src = fetchPypi {
+      pname = "readme_renderer";
+      version = "44.0";
+      hash = "sha256-hxIDTqu/poBcrPFAK07rKnMCj3LRFm1vXLf5wEfF0eE=";
+    };
+    # Tests fail against nixpkgs' cmarkgfm and Python 3.14
+    doCheck = false;
+  };
+
   # python-hidraw does not use hidapi by default
   # even though the documentation says that it should
   hidapi-hidraw = hidapi.overrideAttrs (old: {
@@ -135,7 +147,7 @@ buildPythonPackage {
     packaging
     pkginfo
     pygments
-    readme-renderer
+    readme-renderer-44
     cmarkgfm
     requests-cache
     requests-futures
